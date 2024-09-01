@@ -5,14 +5,16 @@ import { Link } from 'react-router-dom';
 
 function Header() {
   return (
-    <header className=" text-pale p-4 font-baskervville shadow-lg">
-      <ul className='bg-darkGreen text-xl md:text-2xl flex justify-around p-5 font-semibold'>
-        <li><Link to="/products" className="flex-1 p-5">Products</Link></li>
-        <li><Link to="/register" className="flex-1 p-5">Register</Link></li>
-        <li><Link to="/" className="flex-1 p-5">Maple Bliss</Link></li>
-        <li><Link to="/cart" className="flex-1 p-5">Cart</Link></li>
-        <li><Link to="/login" className="flex-1 p-5">Login</Link></li>
-      </ul>
+  <header className="text-pale p-4 font-baskervville shadow-lg overflow-x-hidden">
+    <ul className='bg-darkGreen text-xl flex flex-wrap justify-around p-4 font-semibold w-full'>
+      <li className="flex-1 text-center"><Link to="/products">Products</Link></li>
+      <li className="flex-1 text-center"><Link to="/register">Register</Link></li>
+      <li className="flex-1 text-center"><Link to="/">Maple Bliss</Link></li>
+      <li className="flex-1 text-center"><Link to="/cart">Cart</Link></li>
+      <li className="flex-1 text-center"><Link to="/login">Login</Link></li>
+  </ul>
+</header>
+
     </header>
   );
 }
