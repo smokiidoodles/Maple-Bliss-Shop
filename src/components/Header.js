@@ -14,8 +14,6 @@ function Header() {
       <li className="flex-1 text-center"><Link to="/login">Login</Link></li>
   </ul>
 </header>
-
-    </header>
   );
 }
 
