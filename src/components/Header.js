@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function Header() {
   return (
     <header className=" text-pale p-4 font-baskervville shadow-lg">
-  <ul className='bg-darkGreen text-2xl flex justify-around p-5 font-semibold'>
+<ul className='bg-darkGreen text-2xl flex flex-wrap justify-around p-5 font-semibold'>
   <li><Link to="/products" className="flex-1 min-w-[80px] p-5">Products</Link></li>
   <li><Link to="/register" className="flex-1 min-w-[80px] p-5">Register</Link></li>
   <li><Link to="/" className="flex-1 min-w-[80px] p-5">Maple Bliss</Link></li>
