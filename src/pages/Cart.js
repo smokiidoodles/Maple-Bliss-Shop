@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart, toggleShipping } from '../redux/cartSlice';
-
-// This component is mainly in control of the cart feature. However it does recieve context from the CartSlice from the Redux File.
+import { removeFromCart, setShippingMethod } from '../redux/cartSlice';
+import { toggleShipping } from '../redux/cartSlice';
 
 function Cart() {
   const cart = useSelector((state) => state.cart.items);
+  const shippingMethod = useSelector((state) => state.cart.shippingMethod);
   const includeShipping = useSelector((state) => state.cart.includeShipping);
   const dispatch = useDispatch();
+  const [showHelpModal, setShowHelpModal] = useState(false);
+
+  const shippingOptions = {
+    standard: 2,
+    express: 5,
+    overnight: 10,
+  };
+
+  const handleShippingChange = (e) => {
+    const selectedMethod = e.target.value;
+    dispatch(setShippingMethod(selectedMethod));
+  };
 
   const calculateTotal = () => {
     const productTotal = cart.reduce((sum, product) => sum + product.price, 0);
-    return includeShipping ? productTotal + 2 : productTotal;
+    return includeShipping ? productTotal + shippingOptions[shippingMethod] : productTotal;
+  };
+
+  const toggleHelpModal = () => {
+    setShowHelpModal(!showHelpModal);
   };
 
   return (
@@ -44,19 +60,49 @@ function Cart() {
               </li>
             ))}
           </ul>
+
           <div className="mt-4">
-            <label className="inline-flex items-center">
-              <input
-                type="checkbox"
-                checked={includeShipping}
-                onChange={() => dispatch(toggleShipping())}
-                className="mr-2"
-              />
-              <span className="text-darkGreen">Include Shipping ($2)</span>
-            </label>
+            <label htmlFor="shipping" className="block mb-2">Select Shipping Method:</label>
+            <select
+              id="shipping"
+              value={shippingMethod}
+              onChange={handleShippingChange}
+              className="p-2 border rounded"
+            >
+              <option value="standard">Standard Shipping ($2.00)</option>
+              <option value="express">Express Shipping ($5.00)</option>
+              <option value="overnight">Overnight Shipping ($10.00)</option>
+            </select>
+            <button
+              onClick={toggleHelpModal}
+              className="ml-4 text-blue-500 underline"
+            >
+              Need Help?
+            </button>
           </div>
+
           <div className="mt-4">
             <h3 className="text-2xl">Total: ${calculateTotal().toFixed(2)}</h3>
+          </div>
+        </div>
+      )}
+
+      {/* Help Modal */}
+      {showHelpModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center">
+          <div className="bg-white p-4 rounded shadow-lg max-w-md">
+            <h2 className="text-xl mb-4">Shipping Options</h2>
+            <ul>
+              <li><strong>Standard Shipping:</strong> Delivered in 2-5 days for $2.00</li>
+              <li><strong>Express Shipping:</strong> Delivered in 1-2 days for $5.00</li>
+              <li><strong>Overnight Shipping:</strong> Delivered in 1 day for $10.00</li>
+            </ul>
+            <button
+              onClick={toggleHelpModal}
+              className="mt-4 text-blue-500 underline"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
