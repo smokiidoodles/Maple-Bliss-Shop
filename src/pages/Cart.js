@@ -1,12 +1,11 @@
+// This file handles the cart page and uses context from my cartslice.js file.
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, setShippingMethod } from '../redux/cartSlice';
-import { toggleShipping } from '../redux/cartSlice';
 
 function Cart() {
   const cart = useSelector((state) => state.cart.items);
   const shippingMethod = useSelector((state) => state.cart.shippingMethod);
-  const includeShipping = useSelector((state) => state.cart.includeShipping);
   const dispatch = useDispatch();
   const [showHelpModal, setShowHelpModal] = useState(false);
 
@@ -23,7 +22,8 @@ function Cart() {
 
   const calculateTotal = () => {
     const productTotal = cart.reduce((sum, product) => sum + product.price, 0);
-    return includeShipping ? productTotal + shippingOptions[shippingMethod] : productTotal;
+    const shippingCost = shippingOptions[shippingMethod] || 0;
+    return productTotal + shippingCost;
   };
 
   const toggleHelpModal = () => {
@@ -87,7 +87,7 @@ function Cart() {
         </div>
       )}
 
-      {/* Help Modal */}
+      {/* I added a help icon as requested from my feedback.*/}
       {showHelpModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center">
           <div className="bg-white p-4 rounded shadow-lg max-w-md">
